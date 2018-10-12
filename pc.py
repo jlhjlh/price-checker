@@ -24,6 +24,11 @@ def get_addresses():
         return (addresses)
 
 
+def send_message(title, message):
+    push = Client(PUSHOVER_USER_TOKEN, api_token=PUSHOVER_API_TOKEN)  # create the pushover object
+    push.send_message(message, title=title)
+
+
 def main(addresses):
     for url in addresses:
         page = requests.get(url)
@@ -36,19 +41,17 @@ def main(addresses):
 
         current_price = float(current_price.contents[0][1:])
 
-        print("*****************************")
-
         if orig_price is not None:
             orig_price = float(orig_price.contents[0][1:])
 
             if current_price < orig_price:
-                push = Client(PUSHOVER_USER_TOKEN, api_token=PUSHOVER_API_TOKEN)  # create the pushover object
 
-                msg = (f"The price of {title} has dropped! Original price:  ${orig_price} new price: ${current_price}. Here's the link: {url}\n")
+                title = "Nordstrom's price drop alert!"
+                message = (f"The price of {title} has dropped! Original price:  ${orig_price} \
+                            New price: ${current_price}. Here's the link: {url}\n")
 
-                push.send_message(msg, title="Nordstrom's price drop alert!")  
+                send_message(title, message)
 
 
 if __name__ == "__main__":
     main(get_addresses())  # get addresses returns addresses which gets passed to main
-    
