@@ -13,6 +13,7 @@ PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
 
 addresses = []
 
+
 def get_addresses():
     with open('items.csv') as f:
         reader = csv.DictReader(f, delimiter=',')
@@ -22,7 +23,8 @@ def get_addresses():
             addresses.append(address)
         return (addresses)
 
-def main(addresses):          
+
+def main(addresses):
     for url in addresses:
         page = requests.get(url)
 
@@ -41,12 +43,12 @@ def main(addresses):
 
             if current_price < orig_price:
                 push = Client(PUSHOVER_USER_TOKEN, api_token=PUSHOVER_API_TOKEN)  # create the pushover object
-                
+
                 msg = (f"The price of {title} has dropped! Original price:  ${orig_price} new price: ${current_price}. Here's the link: {url}\n")
 
                 push.send_message(msg, title="Nordstrom's price drop alert!")  
 
 
 if __name__ == "__main__":
-    #addresses = get_addresses()
-    main(get_addresses())  #  get addresses returns addresses which gets passed to main :)
+    main(get_addresses())  # get addresses returns addresses which gets passed to main
+    
