@@ -38,7 +38,7 @@ def main(addresses):
         current_price = soup.find('span', class_=re.compile(r'currentPrice'))  # returns a list
         orig_price = soup.find('span', class_=re.compile(r'originalPrice'))  # returns a list
         title = soup.find("title").contents[0]
-
+        title = title.partition(" |")[0]  # remove | Nordstrom from the title
         current_price = float(current_price.contents[0][1:])
 
         if orig_price is not None:
@@ -51,7 +51,8 @@ def main(addresses):
                             New price: ${current_price}. Here's the link: {url}\n")
 
                 send_message(title, message)
+                print("Found some stuff on sale, sending you a message!")
 
-
+        print(f"{title} is not sale, sorry!")
 if __name__ == "__main__":
     main(get_addresses())  # get addresses returns addresses which gets passed to main
