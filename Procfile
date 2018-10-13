@@ -1,1 +1,1 @@
-web: python $FILE
+web: python pc.py
