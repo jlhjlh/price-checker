@@ -11,9 +11,9 @@ from dotenv import load_dotenv
 if os.getenv("ENV") == "development":
     load_dotenv()
 
-    PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
-    PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
-    ITEMS_URL = os.getenv("ITEMS_URL")
+PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
+PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
+ITEMS_URL = os.getenv("ITEMS_URL")
 
 
 def get_addresses():
