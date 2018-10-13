@@ -1,27 +1,38 @@
 import re
 import csv
 import os
+import io
 
 import requests
 from bs4 import BeautifulSoup
 from pushover import Client
 from dotenv import load_dotenv
 
-load_dotenv()
-PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
-PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
+if os.getenv("ENV") == "development":
+    load_dotenv()
 
-addresses = []
+    PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
+    PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
+    ITEMS_URL = os.getenv("ITEMS_URL")
 
 
 def get_addresses():
-    with open('items.csv') as f:
-        reader = csv.DictReader(f, delimiter=',')
+    addresses = []
 
-        for row in reader:
-            address = row['url']
-            addresses.append(address)
-        return (addresses)
+    if os.getenv("ENV") == "development":
+        csv_file = open('items.csv')
+    else:
+        csv_file = io.StringIO(requests.get(ITEMS_URL).content.decode('utf-8'))
+
+    reader = csv.DictReader(csv_file)
+
+    for row in reader:
+        address = row['url']
+        addresses.append(address)
+
+    csv_file.close()
+
+    return (addresses)
 
 
 def send_message(title, message):
