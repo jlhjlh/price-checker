@@ -24,12 +24,12 @@ KEY = ps.getenv("KEY")
 
 
 def get_addresses():
+    addresses = []
+    
     s3 = boto3.resource('s3')
     s3.Bucket(BUCKET_NAME).download_file(KEY, 'items.csv')
 
-    addresses = []
     csv_file = open('items.csv')
-
     reader = csv.DictReader(csv_file)
 
     for row in reader:
