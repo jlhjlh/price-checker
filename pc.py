@@ -20,13 +20,14 @@ PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
 ITEMS_URL = os.getenv("ITEMS_URL")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 KEY = os.getenv("KEY")
-
+S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
+S3_SECRET = os.getenv("S3_SECRET")
 
 
 def get_addresses():
     addresses = []
 
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource('s3', aws_access_key_id=S3_ACCESS_KEY, aws_secret_access_key=S3_SECRET,)
     s3.Bucket(BUCKET_NAME).download_file(KEY, 'items.csv')
 
     csv_file = open('items.csv')
