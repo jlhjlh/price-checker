@@ -7,12 +7,12 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from pushover import Client
-from dotenv import load_dotenv
 import boto3
 import botocore
 
-
+# load the env vars locally if in development
 if os.getenv("ENV") == "development":
+    from dotenv import load_dotenv
     load_dotenv()
 
 PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
@@ -27,7 +27,7 @@ S3_SECRET = os.getenv("S3_SECRET")
 def get_addresses():
     addresses = []
 
-    s3 = boto3.resource('s3', aws_access_key_id=S3_ACCESS_KEY, aws_secret_access_key=S3_SECRET,)
+    s3 = boto3.resource('s3', aws_access_key_id=S3_ACCESS_KEY, aws_secret_access_key=S3_SECRET)
     s3.Bucket(BUCKET_NAME).download_file(KEY, 'items.csv')
 
     csv_file = open('items.csv')
