@@ -18,14 +18,14 @@ if os.getenv("ENV") == "development":
 PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
 PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
 ITEMS_URL = os.getenv("ITEMS_URL")
-BUCKET_NAME = ps.getenv("BUCKET_NAME")
-KEY = ps.getenv("KEY")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
+KEY = os.getenv("KEY")
 
 
 
 def get_addresses():
     addresses = []
-    
+
     s3 = boto3.resource('s3')
     s3.Bucket(BUCKET_NAME).download_file(KEY, 'items.csv')
 
