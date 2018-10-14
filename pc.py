@@ -8,6 +8,9 @@ import requests
 from bs4 import BeautifulSoup
 from pushover import Client
 from dotenv import load_dotenv
+import boto3
+import botocore
+
 
 if os.getenv("ENV") == "development":
     load_dotenv()
@@ -15,15 +18,17 @@ if os.getenv("ENV") == "development":
 PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
 PUSHOVER_USER_TOKEN = os.getenv("PUSHOVER_USER_TOKEN")
 ITEMS_URL = os.getenv("ITEMS_URL")
+BUCKET_NAME = ps.getenv("BUCKET_NAME")
+KEY = ps.getenv("KEY")
+
 
 
 def get_addresses():
-    addresses = []
+    s3 = boto3.resource('s3')
+    s3.Bucket(BUCKET_NAME).download_file(KEY, 'items.csv')
 
-    if os.getenv("ENV") == "development":
-        csv_file = open('items.csv')
-    else:
-        csv_file = io.StringIO(requests.get(ITEMS_URL).content.decode('utf-8'))
+    addresses = []
+    csv_file = open('items.csv')
 
     reader = csv.DictReader(csv_file)
 
