@@ -2,6 +2,7 @@ import re
 import csv
 import os
 import io
+import time
 
 import requests
 from bs4 import BeautifulSoup
@@ -64,6 +65,9 @@ def main(addresses):
                 send_message(title, message)
                 print("Found some stuff on sale, sending you a message!")
 
-        print(f"{title} is not sale, sorry!")
+        print(f"{title} is not on sale, sorry!")
+
+        time.sleep(1)
+
 if __name__ == "__main__":
     main(get_addresses())  # get addresses returns addresses which gets passed to main
